@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">ToDo</string>
+    <string name="service_page1">Plan your tasks to do, that way you’ll stay organized ,and you won’t skip any</string>
+    <string name="service_page2">Make a full schedule for the whole week and stay organized and productive all days</string>
+    <string name="service_page3">create a team task, invite people and manage your work together</string>
+    <string name="service_page4">Your information are secure with us</string>
+    <string name="Homepagetexxt1">WELCOME</string>
+    <string name="Homepagetextx2">Never Miss What Matters</string>
+    <string name="homepagelabeltask1">Incomplete Task</string>
+    <string name="homepagelabeltask2">Complete Task</string>
+    <string name="view_all"> View all</string>
+    <string name="serachbaartext">Search by task title</string>
+    <string name="sortby">Sort By:</string>
+    <string name="tasklist">Tasks List</string>
+    <string name="task">task</string>
+    <string name="description">Description</string>
+    <string name="date">Date</string>
+    <string name="update">Update</string>
+    <string name="settext">%1$d/%2$d/%3$d</string>
+    <string name="settext2">%1$d:%2$s%3$s</string>
+    <string name="task_date_time">%1$s | %2$s</string>
+    <string name="no_completed_tasks">no_completed_tasks\n</string>
+    <string name="no_incomplete_tasks">no_incomplete_tasks\n</string>
+    <string name="set_task_for">Set task for %1$s</string>
+    <string name="set_task_for1">Set task for %1$s</string>
+    <string name="set_text_for3">%1$d:%2$s%3$s</string>
+    <string name="set_text_to1">%1$s | %2$s</string>
+</resources>
