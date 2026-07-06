@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.todo.R
 
-class OnboardingFragment : Fragment() {
+class OnboardingContainerFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager2
     private lateinit var dotsLayout: LinearLayout

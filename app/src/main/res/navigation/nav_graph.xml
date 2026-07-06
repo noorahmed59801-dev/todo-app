@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/onboardingFragment"
-        android:name="com.example.todo.presentation.onboarding.OnboardingFragment"
+        android:name="com.example.todo.presentation.onboarding.OnboardingContainerFragment"
         android:label="OnboardingFragment">
         <action
             android:id="@+id/action_onboarding_to_home"
@@ -39,8 +39,8 @@
 
     <fragment
         android:id="@+id/tasksFragment"
-        android:name="com.example.todo.presentation.task.tasklist.TaskListFragment"
-        android:label="TaskListFragment" />
+        android:name="com.example.todo.presentation.task.incompletedtasklist.IncompletedTaskListFragment"
+        android:label="incompletedTaskListFragment" />
 
     <fragment
         android:id="@+id/taskDetailFragment"
@@ -49,7 +49,7 @@
 
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="com.example.todo.presentation.calendar.CalendarFragment"
-        android:label="CalendarFragment" />
+        android:name="com.example.todo.presentation.task.completedtasklist.CompletedTaskListFragment"
+        android:label="CompletedTaskListFragment" />
 
 </navigation>

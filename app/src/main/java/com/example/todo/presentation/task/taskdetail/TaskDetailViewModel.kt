@@ -18,6 +18,12 @@ class TaskDetailViewModel @Inject constructor(
     private val _selectedTask = MutableLiveData<Task?>()
     val selectedTask: LiveData<Task?> = _selectedTask
 
+    private val _taskMarkedDone = MutableLiveData<Boolean>()
+    val taskMarkedDone: LiveData<Boolean> = _taskMarkedDone
+
+    private val _taskDeleted = MutableLiveData<Boolean>()
+    val taskDeleted: LiveData<Boolean> = _taskDeleted
+
     fun loadTaskById(taskId: Int) {
         viewModelScope.launch {
             _selectedTask.postValue(repository.getTaskById(taskId))
@@ -27,12 +33,14 @@ class TaskDetailViewModel @Inject constructor(
     fun markAsDone(task: Task) {
         viewModelScope.launch {
             repository.updateTask(task.copy(isCompleted = true))
+            _taskMarkedDone.postValue(true)
         }
     }
 
     fun deleteTask(task: Task) {
         viewModelScope.launch {
             repository.deleteTask(task)
+            _taskDeleted.postValue(true)
         }
     }
 

@@ -36,9 +36,23 @@ class TaskDetailFragment : Fragment() {
 
         viewModel.loadTaskById(taskId)
 
-        // moved outside observer — these don't need task object
         binding.backBtn.setOnClickListener {
             findNavController().popBackStack()
+        }
+
+        // Navigate back only once the write to the database has actually finished
+        viewModel.taskMarkedDone.observe(viewLifecycleOwner) { done ->
+            if (done) {
+                Toast.makeText(requireContext(), "Task marked as done!", Toast.LENGTH_SHORT).show()
+                findNavController().popBackStack()
+            }
+        }
+
+        viewModel.taskDeleted.observe(viewLifecycleOwner) { deleted ->
+            if (deleted) {
+                Toast.makeText(requireContext(), "Task deleted!", Toast.LENGTH_SHORT).show()
+                findNavController().popBackStack()
+            }
         }
 
         viewModel.selectedTask.observe(viewLifecycleOwner) { task ->
@@ -50,15 +64,11 @@ class TaskDetailFragment : Fragment() {
                 taskDescriptionText.text = task.description
 
                 doneCard.setOnClickListener {
-                    viewModel.markAsDone(task)
-                    Toast.makeText(requireContext(), "Task marked as done!", Toast.LENGTH_SHORT).show()
-                    findNavController().popBackStack()
+                    viewModel.markAsDone(task)   // navigation now happens via the observer above
                 }
 
                 deleteCard.setOnClickListener {
-                    viewModel.deleteTask(task)
-                    Toast.makeText(requireContext(), "Task deleted!", Toast.LENGTH_SHORT).show()
-                    findNavController().popBackStack()
+                    viewModel.deleteTask(task)   // navigation now happens via the observer above
                 }
 
                 pinCard.setOnClickListener {

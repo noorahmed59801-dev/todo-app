@@ -12,7 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todo.R
 import com.example.todo.data.Task
 import com.example.todo.databinding.FragmentHomeBinding
-import com.example.todo.presentation.task.tasklist.TaskAdapter
+import com.example.todo.presentation.task.taskcreation.CreateTaskFragment
+import com.example.todo.presentation.task.incompletedtasklist.TaskAdapter
 import com.example.todo.util.PrefsConstants
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,18 +41,33 @@ class HomeFragment : Fragment() {
         val name = requireContext()
             .getSharedPreferences(PrefsConstants.PREFS_NAME, Context.MODE_PRIVATE)
             .getString(PrefsConstants.KEY_USER_NAME, "")
-        binding.title1.text = if (name.isNullOrEmpty()) "WELCOME" else "WELCOME $name".uppercase()
 
         incompleteAdapter = TaskAdapter(emptyList()) { task -> navigateToDetail(task) }
         completeAdapter = TaskAdapter(emptyList()) { task -> navigateToDetail(task) }
 
-        binding.incompleteTasksRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.incompleteTasksRecyclerView.adapter = incompleteAdapter
-        binding.incompleteTasksRecyclerView.isNestedScrollingEnabled = false
+        with(binding) {
+            title1.text = if (name.isNullOrEmpty()) "WELCOME" else "WELCOME $name".uppercase()
 
-        binding.completeTasksRecyclerView1.layoutManager = LinearLayoutManager(requireContext())
-        binding.completeTasksRecyclerView1.adapter = completeAdapter
-        binding.completeTasksRecyclerView1.isNestedScrollingEnabled = false
+            incompleteTasksRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            incompleteTasksRecyclerView.adapter = incompleteAdapter
+            incompleteTasksRecyclerView.isNestedScrollingEnabled = false
+
+            completeTasksRecyclerView1.layoutManager = LinearLayoutManager(requireContext())
+            completeTasksRecyclerView1.adapter = completeAdapter
+            completeTasksRecyclerView1.isNestedScrollingEnabled = false
+
+            addbutton.setOnClickListener {
+                CreateTaskFragment.newInstance().show(parentFragmentManager, "CreateTaskFragment")
+            }
+
+            seebutton1.setOnClickListener {
+                findNavController().navigate(R.id.tasksFragment)
+            }
+
+            viewallbutttontext.setOnClickListener {
+                findNavController().navigate(R.id.calendarFragment)
+            }
+        }
 
         viewModel.todayCompletedCount.observe(viewLifecycleOwner) { count ->
             binding.taskcounter1.completedCount.text = count.toString()
@@ -63,14 +79,12 @@ class HomeFragment : Fragment() {
 
         viewModel.incompleteTasks.observe(viewLifecycleOwner) { tasks ->
             incompleteAdapter.updateTasks(tasks)
-            binding.emptyIncompleteText.visibility = if (tasks.isEmpty()) View.VISIBLE else View.GONE
-            binding.incompleteTasksRecyclerView.visibility = if (tasks.isEmpty()) View.GONE else View.VISIBLE
+            binding.incompleteGroup.visibility = if (tasks.isEmpty()) View.GONE else View.VISIBLE
         }
 
         viewModel.completedTasks.observe(viewLifecycleOwner) { tasks ->
             completeAdapter.updateTasks(tasks)
-            binding.emptyCompleteText.visibility = if (tasks.isEmpty()) View.VISIBLE else View.GONE
-            binding.completeTasksRecyclerView1.visibility = if (tasks.isEmpty()) View.GONE else View.VISIBLE
+            binding.completeGroup.visibility = if (tasks.isEmpty()) View.GONE else View.VISIBLE
         }
     }
 

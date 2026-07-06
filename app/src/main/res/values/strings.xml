@@ -11,7 +11,7 @@
     <string name="view_all"> View all</string>
     <string name="serachbaartext">Search by task title</string>
     <string name="sortby">Sort By:</string>
-    <string name="tasklist">Tasks List</string>
+    <string name="tasklist">Incomplete Tasks List</string>
     <string name="task">task</string>
     <string name="description">Description</string>
     <string name="date">Date</string>
@@ -25,4 +25,5 @@
     <string name="set_task_for1">Set task for %1$s</string>
     <string name="set_text_for3">%1$d:%2$s%3$s</string>
     <string name="set_text_to1">%1$s | %2$s</string>
+    <string name="completedtasklist">Completed Task List</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.todo.presentation.task.tasklist
+package com.example.todo.presentation.task.completedtasklist
 
 import android.os.Bundle
 import android.text.Editable
@@ -13,19 +13,20 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todo.R
 import com.example.todo.data.Task
-import com.example.todo.databinding.FragmentTaskListBinding
-import com.example.todo.presentation.task.taskcreation.CreateTaskFragment
+import com.example.todo.databinding.FragmentCompletedTaskListBinding
+import com.example.todo.presentation.task.incompletedtasklist.SortOption
+import com.example.todo.presentation.task.incompletedtasklist.TaskAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 @AndroidEntryPoint
-class TaskListFragment : Fragment() {
+class CompletedTaskListFragment : Fragment() {
 
-    private var _binding: FragmentTaskListBinding? = null
+    private var _binding: FragmentCompletedTaskListBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: TaskListViewModel by viewModels()
+    private val viewModel: CompletedTaskListViewModel by viewModels()
     private var allTasksList: List<Task> = emptyList()
     private lateinit var adapter: TaskAdapter
 
@@ -34,7 +35,7 @@ class TaskListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentTaskListBinding.inflate(inflater, container, false)
+        _binding = FragmentCompletedTaskListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -56,10 +57,6 @@ class TaskListFragment : Fragment() {
 
         binding.tasksRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.tasksRecyclerView.adapter = adapter
-
-        binding.addbutton.setOnClickListener {
-            CreateTaskFragment.newInstance().show(parentFragmentManager, "CreateTaskFragment")
-        }
 
         viewModel.allTasks.observe(viewLifecycleOwner) { tasks ->
             allTasksList = tasks
@@ -84,8 +81,6 @@ class TaskListFragment : Fragment() {
                 menu.add(0, 2, 0, "Title Z-A")
                 menu.add(0, 3, 0, "Date Ascending")
                 menu.add(0, 4, 0, "Date Descending")
-                menu.add(0, 5, 0, "Completed First")
-                menu.add(0, 6, 0, "Incomplete First")
                 menu.add(0, 7, 0, "Clear Sort")
                 setOnMenuItemClickListener { item ->
                     viewModel.setSortOption(when (item.itemId) {
@@ -93,8 +88,6 @@ class TaskListFragment : Fragment() {
                         2 -> SortOption.TITLE_DESC
                         3 -> SortOption.DATE_ASC
                         4 -> SortOption.DATE_DESC
-                        5 -> SortOption.COMPLETED
-                        6 -> SortOption.INCOMPLETE
                         else -> SortOption.NONE
                     })
                     true
@@ -126,9 +119,7 @@ class TaskListFragment : Fragment() {
             SortOption.TITLE_DESC -> result.sortedByDescending { it.title.lowercase() }
             SortOption.DATE_ASC -> result.sortedBy { parseDate(it.date) }
             SortOption.DATE_DESC -> result.sortedByDescending { parseDate(it.date) }
-            SortOption.COMPLETED -> result.sortedByDescending { it.isCompleted }
-            SortOption.INCOMPLETE -> result.sortedBy { it.isCompleted }
-            SortOption.NONE -> result
+            else -> result
         }
 
         result = result.sortedByDescending { it.isPinned }

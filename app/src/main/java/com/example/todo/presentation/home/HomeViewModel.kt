@@ -11,21 +11,30 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
+
 @Suppress("UnusedPrivateProperty")
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val repository: TaskRepository
 ) : ViewModel() {
 
+    private companion object {
+        const val RECENT_LIMIT = 3
+    }
+
     private fun getToday(): String {
         return SimpleDateFormat("d/M/yyyy", Locale.getDefault()).format(Date())
     }
 
     val incompleteTasks: LiveData<List<Task>> =
-        repository.getIncompleteTasks().asLiveData()
+        repository.getIncompleteTasks()
+            .map { tasks -> tasks.take(RECENT_LIMIT) }
+            .asLiveData()
 
     val completedTasks: LiveData<List<Task>> =
-        repository.getCompletedTasks().asLiveData()
+        repository.getCompletedTasks()
+            .map { tasks -> tasks.take(RECENT_LIMIT) }
+            .asLiveData()
 
     val todayCompletedCount: LiveData<Int> =
         repository.getTodayCompletedTasks(getToday())

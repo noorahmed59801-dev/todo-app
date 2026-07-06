@@ -1,5 +1,6 @@
 package com.example.todo.presentation.task.taskcreation
 
+import android.app.Dialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -11,6 +12,8 @@ import androidx.fragment.app.viewModels
 import com.example.todo.R
 import com.example.todo.data.Task
 import com.example.todo.databinding.FragmentCreateTaskBinding
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
@@ -41,6 +44,22 @@ class CreateTaskFragment : BottomSheetDialogFragment() {
             }
             return fragment
         }
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+        dialog.setOnShowListener {
+            val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.let {
+                it.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+                it.requestLayout()
+                val behavior = BottomSheetBehavior.from(it)
+                behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                behavior.skipCollapsed = true
+                behavior.isDraggable = false
+            }
+        }
+        return dialog
     }
 
     override fun onCreateView(
